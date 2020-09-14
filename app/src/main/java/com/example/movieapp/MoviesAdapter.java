@@ -1,5 +1,7 @@
 package com.example.movieapp;
 
+import android.content.Context;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -12,11 +14,11 @@ import java.util.List;
 
 public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.ViewHolder> {
 
-    //private List<Movies> moviesList;
+    private List<Movies> moviesList;
 
-   // public MoviesAdapter(List<Movies> moviesList) {
-        //this.moviesList = moviesList;
-    //}
+    public MoviesAdapter(List<Movies> moviesList) {
+        this.moviesList = moviesList;
+    }
 
     public class ViewHolder extends RecyclerView.ViewHolder{
        public TextView idTv;
@@ -34,17 +36,27 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.ViewHolder
     @NonNull
     @Override
     public MoviesAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return null;
+        Context context = parent.getContext();
+        LayoutInflater inflater = LayoutInflater.from(context);
+        View contactView = inflater.inflate(R.layout.items_list,parent,false);
+        ViewHolder viewHolder = new ViewHolder(contactView);
+        return viewHolder;
     }
 
     @Override
     public void onBindViewHolder(@NonNull MoviesAdapter.ViewHolder holder, int position) {
+        Movies movies = moviesList.get(position);
+        TextView idTextView = holder.idTv;
+        idTextView.setText(movies.getId());
+        TextView titleTextView = holder.titleTv;
+        titleTextView.setText(movies.getTitle());
+
 
     }
 
     @Override
     public int getItemCount() {
-        return 0;
+        return moviesList.size();
     }
 
 }

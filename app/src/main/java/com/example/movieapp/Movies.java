@@ -1,21 +1,21 @@
 package com.example.movieapp;
 
 public class Movies {
-    private int id;
+    private String id;
     private String title;
     private String imageUrl;
 
-    public Movies(int id, String title, String imageUrl) {
+    public Movies(String id, String title, String imageUrl) {
         this.id = id;
         this.title = title;
         this.imageUrl = imageUrl;
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 

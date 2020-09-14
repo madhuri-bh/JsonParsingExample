@@ -1,25 +1,22 @@
 package com.example.movieapp;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.net.HttpURLConnection;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-    ArrayList<HashMap<String, String>> moviesList;
+    List<Movies> moviesList;
+    private RecyclerView recyclerView;
 
     private String TAG = MainActivity.class.getSimpleName();
 
@@ -28,8 +25,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        moviesList = new ArrayList<>();
-        RecyclerView recyclerView = findViewById(R.id.movies_rv);
+        recyclerView = findViewById(R.id.movies_rv);
         new GetMovies().execute();
     }
 
@@ -58,10 +54,7 @@ public class MainActivity extends AppCompatActivity {
                         String title = moviesJsonObject.getString("title");
                         String image = moviesJsonObject.getString("image");
 
-                        HashMap<String, String> movies = new HashMap<>();
-                        movies.put("id", id);
-                        movies.put("title",title);
-                        movies.put("image",image);
+                        Movies movies = new Movies(id,title,image);
                         moviesList.add(movies);
 
                     }
@@ -90,6 +83,10 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(Void result) {
+            MoviesAdapter moviesAdapter = new MoviesAdapter(moviesList);
+            recyclerView.setAdapter(moviesAdapter);
+recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+
             super.onPostExecute(result);
         }
     }

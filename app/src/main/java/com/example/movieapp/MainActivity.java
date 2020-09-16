@@ -11,11 +11,13 @@ import android.widget.Toast;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-    List<Movies> moviesList;
+    List<Movies> moviesList = new ArrayList<>();
     private RecyclerView recyclerView;
 
     private String TAG = MainActivity.class.getSimpleName();
@@ -43,19 +45,20 @@ public class MainActivity extends AppCompatActivity {
             HttpHandler httpHandler = new HttpHandler();
             String url = "https://velmm.com/apis/volley_array.json";
             String JsonString = httpHandler.makeServiceCall(url);
-            Log.e(TAG,"Response from url : " + JsonString);
+            //Log.e(TAG,"Response from url : " + JsonString);
             if(JsonString != null) {
                 try{
-                    JSONObject jsonObject = new JSONObject(JsonString);
-                    JSONArray moviesJsonArray = jsonObject.getJSONArray("movies");
+                    //JSONObject jsonObject = new JSONObject(JsonString);
+                    JSONArray moviesJsonArray = new JSONArray(JsonString);
                     for(int i =0; i<moviesJsonArray.length(); i++) {
                         JSONObject moviesJsonObject = moviesJsonArray.getJSONObject(i);
                         String id = moviesJsonObject.getString("id");
-                        String title = moviesJsonObject.getString("title");
                         String image = moviesJsonObject.getString("image");
+                        String title = moviesJsonObject.getString("title");
 
                         Movies movies = new Movies(id,title,image);
                         moviesList.add(movies);
+
 
                     }
                 } catch (final JSONException e) {
@@ -83,8 +86,9 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(Void result) {
-            MoviesAdapter moviesAdapter = new MoviesAdapter(moviesList);
+            MoviesAdapter moviesAdapter = new MoviesAdapter(getApplicationContext(), moviesList);
             recyclerView.setAdapter(moviesAdapter);
+            moviesAdapter.notifyDataSetChanged();
 recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
 
             super.onPostExecute(result);

@@ -10,13 +10,16 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+
 import java.util.List;
 
 public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.ViewHolder> {
-
+    private Context context;
     private List<Movies> moviesList;
 
-    public MoviesAdapter(List<Movies> moviesList) {
+    public MoviesAdapter(Context context, List<Movies> moviesList) {
+        this.context = context;
         this.moviesList = moviesList;
     }
 
@@ -48,15 +51,18 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.ViewHolder
         Movies movies = moviesList.get(position);
         TextView idTextView = holder.idTv;
         idTextView.setText(movies.getId());
+        ImageView movieImageView = holder.movieIv;
+        Glide.with(context.getApplicationContext())
+        .load(movies.getImageUrl())
+        .into(movieImageView);
         TextView titleTextView = holder.titleTv;
         titleTextView.setText(movies.getTitle());
-
 
     }
 
     @Override
     public int getItemCount() {
-        return moviesList.size();
+        return moviesList == null ? 0 : moviesList.size();
     }
 
 }

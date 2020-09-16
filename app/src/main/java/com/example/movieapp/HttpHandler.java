@@ -33,11 +33,7 @@ public class HttpHandler {
             urlConnection.setRequestMethod("GET");
             InputStream inputStream = new BufferedInputStream(urlConnection.getInputStream());
             response = convertJsonToString(inputStream);
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return response;
